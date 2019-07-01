@@ -86,7 +86,7 @@ AS
 								@SkipChecksSchema = 'COMP', 
 								@SkipChecksTable = 'BlitzChecksToSkip';;
 
-	-- STANDARDOWE WYKLUCZENIA CHECKÓW
+	-- STANDARDOWE WYKLUCZENIA CHECKÃ“W
 	DELETE FROM [_SQL_].[COMP].[SP_BLITZ] WHERE Priority IN (0, 254, 255);
 	DELETE FROM [_SQL_].[COMP].[SP_BLITZ] WHERE CheckID IN (3, 107, 150, 10, 11, 78, 32, 80, 74, 76, 105, 123, 173, 176, 1009, 1011, 1012, 1020, 1026, 1029, 1031, 1049, 1071, 1072, 1073, 1076, 133, 8, 57, 203, 210, 45, 44, 19, 1032, 1036, 1054, 199, 208, 186, 77, 53);
 	DELETE FROM [_SQL_].[COMP].[SP_BLITZ] WHERE Details LIKE '%user %db_app_owner% has the role %db_ddladmin%';
@@ -98,7 +98,7 @@ AS
 		DELETE FROM [_SQL_].[COMP].[SP_BLITZ] WHERE CheckID IN (47, 160, 38, 48, 39, 122, 124, 117, 36, 96, 61, 30, 93) AND CheckDate >= (SELECT MAX(CheckDate) FROM [_SQL_].[COMP].[SP_BLITZ]);
 	END
 
-	-- CZY W£¥CZONY KERBEROS
+	-- CZY WÂ£Â¥CZONY KERBEROS
 	IF NOT EXISTS (
 		SELECT 1 FROM sys.dm_exec_connections WHERE auth_scheme = 'KERBEROS'
 		)
@@ -115,7 +115,7 @@ AS
            ,NULL
            ,10001);
 
-	-- CZY W£¥CZONE SZYFROWANIE
+	-- CZY WÂ£Â¥CZONE SZYFROWANIE
 	IF NOT EXISTS (
 		SELECT 1 FROM sys.dm_exec_connections WHERE encrypt_option = 'TRUE'
 		)
@@ -132,7 +132,7 @@ AS
            ,NULL
            ,10002);
     
-    -- CZY S¥ HAS£A TAKIE JAK LOGINY
+    -- CZY SÂ¥ HASÂ£A TAKIE JAK LOGINY
     IF EXISTS (
 		select 1 from sys.sql_logins where pwdcompare(name, password_hash) = 1
 		)
@@ -149,7 +149,7 @@ AS
            ,NULL
            ,10003);
 
-    -- CZY S¥ PUSTE HAS£A
+    -- CZY SÂ¥ PUSTE HASÂ£A
     IF EXISTS (
 		select 1 from sys.sql_logins where pwdcompare('', password_hash) = 1
 		)
@@ -166,7 +166,7 @@ AS
            ,NULL
            ,10004);
 
-    -- CZY S¥ S£ABE HAS£A
+    -- CZY SÂ¥ SÂ£ABE HASÂ£A
     IF EXISTS (
 		SELECT 1 FROM sys.sql_logins t1
         INNER JOIN [COMP].[WeakPwd] t2
@@ -255,8 +255,3 @@ AS
 					@body_format = 'HTML';
 	END
 
-
---- PRZYK£ADOWE WYWO£ANIA ---
-EXEC [COMP].[spBlitzCompliance] @IsPROD = 0; -- Dla instancji nieprodukcyjnej
-EXEC [COMP].[spBlitzCompliance] @IsPROD = 1; -- Dla instancji produkcyjnej
-EXEC [COMP].[spBlitzCompliance] @IsPROD = 1, @recipients = 'recipients@domain.pl' -- dla instancji nieprodukcyjnej i raport ma byæ wys³any dla mireks
