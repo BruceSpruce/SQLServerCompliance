@@ -173,6 +173,7 @@ AS
         ON (
                PWDCOMPARE(t2.Passwd, t1.password_hash) = 1
                OR PWDCOMPARE(REPLACE(t2.Passwd, '@@Name', t1.name), t1.password_hash) = 1
+	       OR OR PWDCOMPARE(UPPER(t2.Passwd), password_hash) = 1
            )
 		)
 	INSERT INTO [COMP].[SP_BLITZ] VALUES
