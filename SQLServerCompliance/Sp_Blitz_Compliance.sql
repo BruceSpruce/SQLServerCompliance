@@ -148,7 +148,11 @@ AS
            ,NULL
            ,10003);
 
+<<<<<<< HEAD
     -- CZY SĄ PUSTE HASŁA
+=======
+    -- CZY S¥ PUSTE HAS£A
+>>>>>>> 2d015689e35795399f4aa807da25d99099dfb6bd
     IF EXISTS (
 		select 1 from sys.sql_logins where pwdcompare('', password_hash) = 1
 		)
@@ -165,14 +169,22 @@ AS
            ,NULL
            ,10004);
 
+<<<<<<< HEAD
     -- CZY SĄ SŁABE HASŁA
+=======
+    -- CZY S¥ S£ABE HAS£A
+>>>>>>> 2d015689e35795399f4aa807da25d99099dfb6bd
     IF EXISTS (
 		SELECT 1 FROM sys.sql_logins t1
         INNER JOIN [COMP].[WeakPwd] t2
         ON (
                PWDCOMPARE(t2.Passwd, t1.password_hash) = 1
                OR PWDCOMPARE(REPLACE(t2.Passwd, '@@Name', t1.name), t1.password_hash) = 1
+<<<<<<< HEAD
                OR PWDCOMPARE(UPPER(t2.Passwd), password_hash) = 1
+=======
+	       OR OR PWDCOMPARE(UPPER(t2.Passwd), password_hash) = 1
+>>>>>>> 2d015689e35795399f4aa807da25d99099dfb6bd
            )
 		)
 	INSERT INTO [COMP].[SP_BLITZ] VALUES
@@ -270,4 +282,9 @@ AS
 					@body =  @Body,
 					@subject = @Subject,
 					@body_format = 'HTML';
+<<<<<<< HEAD
 	END
+=======
+	END
+
+>>>>>>> 2d015689e35795399f4aa807da25d99099dfb6bd
