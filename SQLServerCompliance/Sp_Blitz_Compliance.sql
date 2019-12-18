@@ -22,10 +22,12 @@ CREATE TABLE COMP.BlitzChecksToSkip
 	SELECT * FROM COMP.BlitzChecksToSkip
 */
 
+/* EXAMPLE
 INSERT INTO COMP.BlitzChecksToSkip 
   (ServerName, DatabaseName, CheckID)
   VALUES(NULL, 'DMS', 16);
 GO
+*/
 
 /*
     WEAK PASSWORDS
@@ -53,6 +55,15 @@ WITH
     TABLOCK
 );
 
+CREATE TABLE [COMP].[BlitzChecksToSkipFullEntry](
+	[ID] [INT] IDENTITY(1,1) NOT NULL,
+	[Details] [NVARCHAR](MAX) NOT NULL,
+ CONSTRAINT [PK_ID_BlitzChecksToSkipFullEntry] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 
 /*
 	COMPLIANCE PROCEDURE
@@ -91,7 +102,8 @@ AS
 	DELETE FROM [_SQL_].[COMP].[SP_BLITZ] WHERE Details LIKE '%user %db_app_owner% has the role %db_ddladmin%';
 	DELETE FROM [_SQL_].[COMP].[SP_BLITZ] WHERE Details LIKE '%Database distribution is compatibility level 90%';
 	DELETE FROM [_SQL_].[COMP].[SP_BLITZ] WHERE Details LIKE '%Stored procedure%master%sp_MSrepl_startup%runs automatically when SQL Server starts up.%';
-
+	DELETE FROM [_SQL_].[COMP].[SP_BLITZ] WHERE REPLACE(LTRIM(RTRIM(Details)), ' ', '') IN (SELECT REPLACE(LTRIM(RTRIM(Details)), ' ', '') AS Details FROM [_SQL_].[COMP].[BlitzChecksToSkipFullEntry]);
+	
 	IF (@IsPROD = 0)
 	BEGIN -- Exclusions for non production instances
 		DELETE FROM [_SQL_].[COMP].[SP_BLITZ] WHERE CheckID IN (47, 160, 38, 48, 39, 122, 124, 117, 36, 96, 61, 30, 93) AND CheckDate >= (SELECT MAX(CheckDate) FROM [_SQL_].[COMP].[SP_BLITZ]);
